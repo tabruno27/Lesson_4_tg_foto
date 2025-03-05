@@ -10,10 +10,16 @@ from utils import create_image_folder, download_image
 def fetch_epic_images():
     start_date = datetime.strptime(args.date, "%Y-%m-%d")
     dates = [start_date + timedelta(days=i) for i in range(args.count)]
-
+    
+     params = {
+        'api_key': api_key,
+    }
+    
+    query_string = urlencode(params)
+    
     for date in dates:
         date_str = date.strftime("%Y-%m-%d")
-        url = f"https://api.nasa.gov/EPIC/api/natural/date/{date_str}?api_key={API_KEY}"
+        url = f"https://api.nasa.gov/EPIC/api/natural/date/{date_str}?{query_string}"
         response = requests.get(url)
 
         try:
@@ -32,14 +38,13 @@ def fetch_epic_images():
 
         for index, image_data in enumerate(launch_data):
             image_name = image_data['image']
-            img_url = f"https://api.nasa.gov/EPIC/archive/natural/{date.year}/{date.month:02}/{date.day:02}/png/{image_name}.png?api_key={API_KEY}"
+            img_url = f"https://api.nasa.gov/EPIC/archive/natural/{date.year}/{date.month:02}/{date.day:02}/png/{image_name}.png?{query_string}"
 
             download_image(img_url, image_folder, f"image_{date_str}_{index + 1}.png")
 
-
-if __name__ == "__main__":
+def main():
     load_dotenv()
-    API_KEY = os.getenv('NASA_API_KEY')
+    api_key = os.getenv('NASA_API_KEY')
     parser = argparse.ArgumentParser(description='Загрузите EPIC-фото NASA.')
     parser.add_argument('--date', type=str, required=True,
                         help='Дата в формате YYYY-MM-DD (обязательно)')
@@ -47,4 +52,7 @@ if __name__ == "__main__":
                         help='Количество дней для загрузки изображений (по умолчанию 5)')
     args = parser.parse_args()
 
-    fetch_epic_images()
+    fetch_epic_images(api_key)
+
+if __name__ == "__main__":
+    main()
