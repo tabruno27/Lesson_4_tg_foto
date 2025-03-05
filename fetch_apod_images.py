@@ -42,11 +42,14 @@ def fetch_apod_images(api_key, count=30):
 
         file_extension = get_file_extension(img_url)
 
-        try:
-            download_image(img_url, image_folder, f"apod_image_{index + 1}{file_extension}") 
-        except Exception as e:
+         try:
+            download_image(img_url, image_folder, f"apod_image_{index + 1}{file_extension}")
+        except (requests.HTTPError, requests.ConnectionError) as e:
             print(f"Ошибка при скачивании изображения {img_url}: {e}")
-
+        except FileNotFoundError as e:
+            print(f"Ошибка: не удалось найти файл для сохранения изображения: {e}")
+        except Exception as e:  # Оставляем это для неожиданных ошибок
+            print(f"Неизвестная ошибка при скачивании изображения {img_url}: {e}")
 
 def main():
     load_dotenv()
