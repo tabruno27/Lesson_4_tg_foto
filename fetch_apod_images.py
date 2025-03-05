@@ -18,7 +18,7 @@ def fetch_apod_images(api_key, count=30):
     url = f"https://api.nasa.gov/planetary/apod?api_key={api_key}&count={count}"
     response = requests.get(url)
 
-    if response.status_code != 200:
+    if not response.ok:
         print(f"Ошибка: {response.status_code}")
         return
 
