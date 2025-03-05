@@ -24,18 +24,18 @@ def fetch_apod_images(api_key, count=30):
 
     apod_data = response.json()
     image_folder = utils.image_folder
-    create_image_folder(image_folder)  # Создаем папку для изображений
+    create_image_folder(image_folder)
 
     for index, item in enumerate(apod_data):
         img_url = item.get('url')
         if not img_url:
             print("Изображение не найдено в ответе APOD.")
-            continue  # Переходим к следующему элементу, если URL отсутствует
+            continue 
 
         file_extension = get_file_extension(img_url)
 
         try:
-            download_image(img_url, image_folder, f"apod_image_{index + 1}{file_extension}")  # Скачиваем изображение
+            download_image(img_url, image_folder, f"apod_image_{index + 1}{file_extension}") 
         except Exception as e:
             print(f"Ошибка при скачивании изображения {img_url}: {e}")
 
