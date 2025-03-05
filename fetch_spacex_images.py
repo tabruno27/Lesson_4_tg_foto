@@ -5,7 +5,6 @@ from utils import create_image_folder, download_image
 
 
 def fetch_spacex_images(launch_id=None):
-    """Получает изображения SpaceX по ID запуска и скачивает их."""
     url = f"https://api.spacexdata.com/v5/launches/{launch_id}" if launch_id else "https://api.spacexdata.com/v5/launches/latest"
     response = requests.get(url)
 
