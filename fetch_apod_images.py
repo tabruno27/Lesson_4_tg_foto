@@ -18,30 +18,33 @@ def fetch_apod_images(api_key, count=30):
     url = f"https://api.nasa.gov/planetary/apod?api_key={api_key}&count={count}"
     response = requests.get(url)
 
-    if response.status_code == 200:
-        apod_data = response.json()
-
-        image_folder = utils.image_folder
-        create_image_folder(image_folder)  # Используем функцию для создания папки
-
-        for index, item in enumerate(apod_data):
-            img_url = item.get('url')
-            if img_url:
-                file_extension = get_file_extension(img_url)
-                
-                try:
-                    download_image(img_url, image_folder, f"apod_image_{index + 1}{file_extension}")  # Передаем папку для сохранения
-                except Exception as e:
-                    print(f"Ошибка при скачивании изображения {img_url}: {e}")
-            else:
-                print("Изображение не найдено в ответе APOD.")
-
-    else:
+    if response.status_code != 200:
         print(f"Ошибка: {response.status_code}")
+        return
+
+    apod_data = response.json()
+    image_folder = utils.image_folder
+    create_image_folder(image_folder)  # Создаем папку для изображений
+
+    for index, item in enumerate(apod_data):
+        img_url = item.get('url')
+        if not img_url:
+            print("Изображение не найдено в ответе APOD.")
+            continue  # Переходим к следующему элементу, если URL отсутствует
+
+        file_extension = get_file_extension(img_url)
+
+        try:
+            download_image(img_url, image_folder, f"apod_image_{index + 1}{file_extension}")  # Скачиваем изображение
+        except Exception as e:
+            print(f"Ошибка при скачивании изображения {img_url}: {e}")
 
 
-if __name__ == "__main__":
+def main():
     load_dotenv()
     api_key = os.getenv('NASA_API_KEY')
 
     fetch_apod_images(count=30, api_key)
+
+if __name__ == "__main__":
+    main()
