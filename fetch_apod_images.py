@@ -14,7 +14,7 @@ def get_file_extension(url):
     return extension
 
 
-def fetch_apod_images(count=30):
+def fetch_apod_images(api_key, count=30):
     url = f"https://api.nasa.gov/planetary/apod?api_key={api_key}&count={count}"
     response = requests.get(url)
 
@@ -44,4 +44,4 @@ if __name__ == "__main__":
     load_dotenv()
     api_key = os.getenv('NASA_API_KEY')
 
-    fetch_apod_images(count=30)
+    fetch_apod_images(count=30, api_key)
