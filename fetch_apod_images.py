@@ -15,7 +15,15 @@ def get_file_extension(url):
 
 
 def fetch_apod_images(api_key, count=30):
-    url = f"https://api.nasa.gov/planetary/apod?api_key={api_key}&count={count}"
+
+     params = {
+        'api_key': api_key,
+        'count': count
+    }
+
+    query_string = urlencode(params)
+
+    url = f"https://api.nasa.gov/planetary/apod?{query_string}"
     response = requests.get(url)
 
     if not response.ok:
