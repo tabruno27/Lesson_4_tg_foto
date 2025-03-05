@@ -6,8 +6,7 @@ image_folder="images"
 
 
 def create_image_folder(folder_name):
-    if not os.path.exists(folder_name):
-        os.makedirs(folder_name)
+    os.makedirs(folder_name, exist_ok=True)
 
 def download_image(url, save_folder, filename):
     try:
