@@ -7,7 +7,7 @@ import utils
 from utils import create_image_folder, download_image
 
 
-def fetch_epic_images():
+def fetch_epic_images(api_key, date_str=None, count=None):
     start_date = datetime.strptime(args.date, "%Y-%m-%d")
     dates = [start_date + timedelta(days=i) for i in range(args.count)]
     
@@ -34,7 +34,6 @@ def fetch_epic_images():
             continue
 
         image_folder = utils.image_folder
-        create_image_folder(image_folder)
 
         for index, image_data in enumerate(launch_data):
             image_name = image_data['image']
