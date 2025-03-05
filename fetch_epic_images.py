@@ -52,7 +52,7 @@ def main():
                         help='Количество дней для загрузки изображений (по умолчанию 5)')
     args = parser.parse_args()
 
-    fetch_epic_images(api_key)
+    fetch_epic_images(api_key, args.date, args.count)
 
 if __name__ == "__main__":
     main()
