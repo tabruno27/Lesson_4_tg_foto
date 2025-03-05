@@ -14,7 +14,7 @@ def get_file_extension(url):
     return extension
 
 
-def fetch_apod_images(api_key, count=30):
+def fetch_apod_images(api_key, count=None):
 
      params = {
         'api_key': api_key,
