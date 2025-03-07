@@ -28,7 +28,7 @@ def fetch_epic_images(api_key, date_str=None, count=None):
             print(f"Ошибка при запросе: {err}")
             continue
 
-        launch_data = response.json()
+        image_data = response.json()
         if not launch_data:
             print(f"Нет данных для даты: {date_str}")
             continue
