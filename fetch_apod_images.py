@@ -30,9 +30,8 @@ def fetch_apod_images(api_key, count=None):
         print(f"Ошибка: {response.status_code}")
         return
 
-    apod_data = response.json()
+    image_data = response.json()
     image_folder = utils.image_folder
-    create_image_folder(image_folder)
 
     for index, item in enumerate(apod_data):
         img_url = item.get('url')
