@@ -12,7 +12,7 @@ def fetch_spacex_images(launch_id=None):
         print(f"Ошибка при получении данных: {response.status_code}")
         return
        
-    launch_data = response.json()
+    image_data = response.json()
     image = launch_data.get('links', {}).get('flickr', {}).get('original')
 
      if not images:
