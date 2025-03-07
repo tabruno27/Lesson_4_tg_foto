@@ -1,7 +1,7 @@
 import argparse
 import requests
 import utils
-from utils import create_image_folder, download_image
+from utils import download_image
 
 
 def fetch_spacex_images(launch_id=None):
