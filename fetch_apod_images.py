@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from urllib.parse import urlsplit, unquote
 from os.path import splitext
 import utils
-from utils import create_image_folder, download_image
+from utils import download_image
 
 
 def get_file_extension(url):
