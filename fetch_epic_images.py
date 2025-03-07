@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from datetime import datetime, timedelta
 import argparse
 import utils
-from utils import create_image_folder, download_image
+from utils import download_image
 
 
 def fetch_epic_images(api_key, date_str=None, count=None):
