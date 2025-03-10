@@ -35,8 +35,8 @@ def fetch_epic_images(api_key, date_str=None, count=None):
         for index, image_data in enumerate(launch_data):
             image_name = image_data['image']
             img_url = f"https://api.nasa.gov/EPIC/archive/natural/{date.year}/{date.month:02}/{date.day:02}/png/{image_name}.png"
-
-            download_image(img_url, params={"api_key": api_key}, image_folder, f"image_{date_str}_{index + 1}.png")
+            response = requests.get(base_url, params={"api_key": api_key})
+            download_image(response, image_folder, f"image_{date_str}_{index + 1}.png")
 
 def main():
     load_dotenv()
