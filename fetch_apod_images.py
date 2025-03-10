@@ -47,8 +47,7 @@ def fetch_apod_images(api_key, count=None):
             print(f"Ошибка при скачивании изображения {img_url}: {e}")
         except FileNotFoundError as e:
             print(f"Ошибка: не удалось найти файл для сохранения изображения: {e}")
-        except Exception as e:  # Оставляем это для неожиданных ошибок
-            print(f"Неизвестная ошибка при скачивании изображения {img_url}: {e}")
+            
 
 def main():
     load_dotenv()
