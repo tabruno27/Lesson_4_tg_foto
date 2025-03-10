@@ -29,8 +29,8 @@ def fetch_apod_images(api_key, count=None):
     image_data = response.json()
     image_folder = utils.image_folder
 
-    for index, item in enumerate(apod_data):
-        img_url = item.get('url')
+    for index, image in enumerate(image_data):
+        img_url = image.get('url')
         if not img_url:
             print("Изображение не найдено в ответе APOD.")
             continue 
