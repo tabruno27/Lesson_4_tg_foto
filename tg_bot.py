@@ -11,7 +11,6 @@ def get_photos_from_directory(directory):
     if not os.path.exists(directory):
         print(f"Директория {directory} не найдена.")
         return []
-
     return [f for f in os.listdir(directory) if f.endswith(('.png', '.jpg', '.jpeg'))]
 
 
@@ -19,6 +18,12 @@ def shuffle_photos(photos):
     random.shuffle(photos)
     return photos
 
+
+def publish_photo(bot, chat_id, photo_path):
+    with open(photo_path, 'rb') as file:
+        bot.send_photo(chat_id=chat_id, photo=file)
+        print(f"Фото опубликовано: {photo_path}")
+        
 
 def publish_photos(directory, publish_interval, bot, chat_id):
     photos = get_photos_from_directory(directory)
@@ -34,7 +39,7 @@ def publish_photos(directory, publish_interval, bot, chat_id):
             time.sleep(publish_interval)
 
 
-if __name__ == "__main__":
+def main():
     load_dotenv()
     tg_token = os.getenv('TG_TOKEN')
     chat_id = os.getenv('CHAT_ID')
@@ -49,4 +54,8 @@ if __name__ == "__main__":
     bot = telegram.Bot(token=tg_token)
 
     directory = utils.image_folder
-    publish_photos(directory, args.interval)
+    publish_photos(directory, args.interval, bot, chat_id)
+
+
+if __name__ == "__main__":
+   main()
