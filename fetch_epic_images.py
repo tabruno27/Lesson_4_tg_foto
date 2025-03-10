@@ -11,16 +11,14 @@ def fetch_epic_images(api_key, date_str=None, count=None):
     start_date = datetime.strptime(args.date, "%Y-%m-%d")
     dates = [start_date + timedelta(days=i) for i in range(args.count)]
     
-     params = {
-        'api_key': api_key,
-    }
     
-    query_string = urlencode(params)
-    
+
     for date in dates:
         date_str = date.strftime("%Y-%m-%d")
         url = f"https://api.nasa.gov/EPIC/api/natural/date/{date_str}?{query_string}"
-        response = requests.get(url)
+        response = requests.get(url, params={ 
+             'api_key': api_key,
+        })
 
         try:
             response.raise_for_status()
