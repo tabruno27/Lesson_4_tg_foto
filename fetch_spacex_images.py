@@ -22,10 +22,10 @@ def fetch_spacex_images(launch_id=None):
         image_folder = utils.image_folder
         
         for index, img_url in enumerate(images, start=1):
-        try:
-            download_image(img_url, image_folder, f"spacex_{index}.jpg")
-        except (ValueError, TypeError) as e:
-            print(f"Ошибка при скачивании изображения {img_url}: {e}")
+            try:
+                download_image(img_url, image_folder, f"spacex_{index}.jpg")
+            except (ValueError, TypeError) as e:
+                print(f"Ошибка при скачивании изображения {img_url}: {e}")
 
 
 if __name__ == "__main__":
