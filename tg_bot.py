@@ -35,7 +35,7 @@ def publish_photos(directory, publish_interval):
 
 if __name__ == "__main__":
     load_dotenv()
-    tg_api = os.getenv('TG_API')
+    tg_token = os.getenv('TG_TOKEN')
     chat_id = os.getenv('CHAT_ID')
 
     parser = argparse.ArgumentParser(description='Публикация фотографий в Telegram.')
@@ -45,7 +45,7 @@ if __name__ == "__main__":
                         help='Имя фотографии для публикации (если не указано, публикуется случайная фотография)')
 
     args = parser.parse_args()
-    bot = telegram.Bot(token=tg_api)
+    bot = telegram.Bot(token=tg_token)
 
     directory = utils.image_folder
     publish_photos(directory, args.interval)
