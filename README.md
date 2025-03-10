@@ -87,7 +87,7 @@ pip install -r requirements.txt
 3. Создайте файл .env в корневой директории проекта и добавьте следующие переменные:
 
 ```bash
-TG_API=ваш_токен_бота
+TG_TOKEN=ваш_токен_бота
 CHAT_ID=ваш_chat_id
 NASA_API_KEY=ваш_api_key_nasa
 ```
