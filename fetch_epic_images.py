@@ -32,7 +32,7 @@ def fetch_epic_images(api_key, date_str=None, count=None):
 
         image_folder = utils.image_folder
 
-        for index, image_data in enumerate(launch_data):
+        for index, image_data in enumerate(image_folder):
             image_name = image_data['image']
             img_url = f"https://api.nasa.gov/EPIC/archive/natural/{date.year}/{date.month:02}/{date.day:02}/png/{image_name}.png"
             response = requests.get(base_url, params={"api_key": api_key})
