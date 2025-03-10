@@ -10,14 +10,13 @@ from utils import download_image
 def fetch_epic_images(api_key, date_str=None, count=None):
     start_date = datetime.strptime(args.date, "%Y-%m-%d")
     dates = [start_date + timedelta(days=i) for i in range(args.count)]
-    
-    
 
     for date in dates:
         date_str = date.strftime("%Y-%m-%d")
-        url = f"https://api.nasa.gov/EPIC/api/natural/date/{date_str}?{query_string}"
+        url = f"https://api.nasa.gov/EPIC/api/natural/date"
         response = requests.get(url, params={ 
-             'api_key': api_key,
+            "api_key": api_key,
+            "date_str": date_str,
         })
 
         try:
@@ -35,9 +34,9 @@ def fetch_epic_images(api_key, date_str=None, count=None):
 
         for index, image_data in enumerate(launch_data):
             image_name = image_data['image']
-            img_url = f"https://api.nasa.gov/EPIC/archive/natural/{date.year}/{date.month:02}/{date.day:02}/png/{image_name}.png?{query_string}"
+            img_url = f"https://api.nasa.gov/EPIC/archive/natural/{date.year}/{date.month:02}/{date.day:02}/png/{image_name}.png"
 
-            download_image(img_url, image_folder, f"image_{date_str}_{index + 1}.png")
+            download_image(img_url, params={"api_key": api_key}, image_folder, f"image_{date_str}_{index + 1}.png")
 
 def main():
     load_dotenv()
