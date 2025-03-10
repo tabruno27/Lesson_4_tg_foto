@@ -8,7 +8,6 @@ import utils
 
 
 def get_photos_from_directory(directory):
-    """Получает список фотографий из заданной директории."""
     if not os.path.exists(directory):
         print(f"Директория {directory} не найдена.")
         return []
@@ -16,21 +15,23 @@ def get_photos_from_directory(directory):
     return [f for f in os.listdir(directory) if f.endswith(('.png', '.jpg', '.jpeg'))]
 
 
-def publish_photos(directory, publish_interval):
-    """Публикует фотографии в Telegram с заданным интервалом."""
+def shuffle_photos(photos):
+    random.shuffle(photos)
+    return photos
+
+
+def publish_photos(directory, publish_interval, bot, chat_id):
     photos = get_photos_from_directory(directory)
     if not photos:
         print("Нет фотографий для публикации.")
         return
 
     while True:
-        random.shuffle(photos)  # Перемешиваем список фотографий
-        for photo in photos:
+        shuffled_photos = shuffle_photos(photos) 
+        for photo in shuffled_photos:
             photo_path = os.path.join(directory, photo)
-            with open(photo_path, 'rb') as file:
-                bot.send_photo(chat_id=chat_id, photo=file)
-                print(f"Фото опубликовано: {photo}")
-            time.sleep(publish_interval)  # Задержка перед публикацией следующей фотографии
+            publish_photo(bot, chat_id, photo_path) 
+            time.sleep(publish_interval)
 
 
 if __name__ == "__main__":
