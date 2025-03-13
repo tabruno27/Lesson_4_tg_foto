@@ -160,10 +160,10 @@ python tg_bot.py --interval 3600
 Можно испортировать данные функций из ```utils.py``` в другие свои скрипты.
 
 ```bash
-from utils import create_image_folder, download_image
+from utils import download_image, get_image_folder
 
 # Создание папки для изображений
-create_image_folder('images')
+get_image_folder()
 
 # Скачивание изображения
 download_image('https://example.com/image.jpg', 'images', 'image.jpg')
