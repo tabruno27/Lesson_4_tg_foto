@@ -4,7 +4,8 @@ import time
 import telegram
 import argparse
 from dotenv import load_dotenv
-import utils
+from utils import get_image_folder
+
 
 
 def get_photos_from_directory(directory):
@@ -14,35 +15,26 @@ def get_photos_from_directory(directory):
     return [f for f in os.listdir(directory) if f.endswith(('.png', '.jpg', '.jpeg'))]
 
 
-def shuffle_photos(photos):
-    random.shuffle(photos)
-    return photos
-
-
-def publish_photo(bot, chat_id, photo_path):
+def publish_photo(bot, tg_chat_id, photo_path):
     with open(photo_path, 'rb') as file:
-        bot.send_photo(chat_id=chat_id, photo=file)
-        print(f"Фото опубликовано: {photo_path}")
-        
+        bot.send_photo(tg_chat_id=tg_chat_id, photo=file)
+    print(f"Фото опубликовано: {photo_path}")
 
-def publish_photos(directory, publish_interval, bot, chat_id):
-    photos = get_photos_from_directory(directory)
-    if not photos:
-        print("Нет фотографий для публикации.")
-        return
 
+def publish_photos(photos, directory, publish_interval, bot, tg_chat_id):
     while True:
-        shuffled_photos = shuffle_photos(photos) 
-        for photo in shuffled_photos:
+        random.shuffle(photos)
+        for photo in photos:
             photo_path = os.path.join(directory, photo)
-            publish_photo(bot, chat_id, photo_path) 
+            publish_photo(bot, tg_chat_id, photo_path)
             time.sleep(publish_interval)
+
 
 
 def main():
     load_dotenv()
     tg_token = os.getenv('TG_TOKEN')
-    chat_id = os.getenv('CHAT_ID')
+    tg_chat_id = os.getenv('TG_CHAT_ID')
 
     parser = argparse.ArgumentParser(description='Публикация фотографий в Telegram.')
     parser.add_argument('--interval', type=int, default=14400,
@@ -52,10 +44,15 @@ def main():
 
     args = parser.parse_args()
     bot = telegram.Bot(token=tg_token)
+    directory = get_image_folder()
 
-    directory = utils.image_folder
-    publish_photos(directory, args.interval, bot, chat_id)
+    photos = get_photos_from_directory(directory)
+    if not photos:
+        print("Нет фотографий для публикации.")
+        return
+
+    publish_photos(photos, directory, args.interval, bot, tg_chat_id)
 
 
 if __name__ == "__main__":
-   main()
+    main()
