@@ -3,20 +3,19 @@ import os
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
 import argparse
-import utils
-from utils import download_image
+from utils import download_image, get_image_folder
 
 
-def fetch_epic_images(api_key, date_str=None, count=None):
-    start_date = datetime.strptime(args.date, "%Y-%m-%d")
-    dates = [start_date + timedelta(days=i) for i in range(args.count)]
+def fetch_epic_images(api_key, start_date_str, count):
+    start_date = datetime.strptime(start_date_str, "%Y-%m-%d")
+    dates = [start_date + timedelta(days=i) for i in range(count)]
 
     for date in dates:
         date_str = date.strftime("%Y-%m-%d")
         url = f"https://api.nasa.gov/EPIC/api/natural/date"
-        response = requests.get(url, params={ 
+        response = requests.get(url, params={
             "api_key": api_key,
-            "date_str": date_str,
+            "date": date_str,
         })
 
         try:
@@ -25,18 +24,18 @@ def fetch_epic_images(api_key, date_str=None, count=None):
             print(f"Ошибка при запросе: {err}")
             continue
 
-        image_data = response.json()
-        if not launch_data:
+        epic_image_data = response.json()
+        if not epic_image_data:
             print(f"Нет данных для даты: {date_str}")
             continue
 
-        image_folder = utils.image_folder
+        image_folder = get_image_folder()
 
-        for index, image_data in enumerate(image_folder):
+        for index, image_data in enumerate(epic_image_data, start=1):
             image_name = image_data['image']
             img_url = f"https://api.nasa.gov/EPIC/archive/natural/{date.year}/{date.month:02}/{date.day:02}/png/{image_name}.png"
-            response = requests.get(base_url, params={"api_key": api_key})
-            download_image(response, image_folder, f"image_{date_str}_{index + 1}.png")
+            download_image(img_url, image_folder, f"image_{date_str}_{index}.png")
+
 
 def main():
     load_dotenv()
